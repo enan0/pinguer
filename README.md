@@ -5,3 +5,11 @@ It's a simple ping/request soft. Load's an XLS file (with a list of devs), and r
 
 @ES:
 Programa para hacer pings a dispositivos y saber si responden. Dichos dispositivos se cargan a partir de un XLS.
+
+
+Mejoras pendientes:
+
+- [ ] Botón de Cancel.
+- [ ] Contador de dispositivos.
+- [ ] Solapas para distintos dispos.
+- [ ] Agregar streaming.
