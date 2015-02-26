@@ -9,6 +9,8 @@ Programa para hacer pings a dispositivos y saber si responden. Dichos dispositiv
 
 Mejoras pendientes:
 - [ ] Botón de Cancel.
-- [ ] Contador de dispositivos.
+- [ ] Contador de dispositivos (total y Ok/Not Ok).
+- [ ] Auto refresh.
+- [ ] Notificaciones.
 - [ ] Solapas para distintos dispos.
 - [ ] Agregar streaming.
