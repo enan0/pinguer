@@ -8,21 +8,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="226.0" prefWidth="254.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maxo.pinguer.view.AboutLayoutController">
+<AnchorPane prefHeight="303.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maxo.pinguer.view.AboutLayoutController">
    <children>
-      <TitledPane collapsible="false" prefHeight="226.0" prefWidth="254.0" text="About" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <TextArea editable="false" prefHeight="180.0" prefWidth="200.0" text="&#10;&#10;Pinguer&#10;&#10;Version: 0.4&#10;&#10;Developed by Maxo..#">
+      <TitledPane collapsible="false" prefHeight="303.0" prefWidth="290.0" text="About Pinguer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane layoutY="23.0" prefHeight="253.0" prefWidth="279.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
+         <children>
+            <TextArea prefHeight="289.0" prefWidth="290.0" text="&#10;&#10;&#10;Pinguer&#10;&#10;Version: 0.4 beta&#10;&#10;Developed by Maxo..#&#10;&#10;&#10;&#9;&#9;Maximiliano Torchio" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
-                  <Font name="System Bold" size="13.0" />
+                  <Font name="System Bold" size="15.0" />
                </font>
             </TextArea>
-         </content></TitledPane>
-      <Button fx:id="exit" layoutX="184.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleExit" text="Ok.">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="73.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="background" fitHeight="289.0" fitWidth="302.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-0.27569580078125" AnchorPane.rightAnchor="0.27569580078125" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="exit" layoutX="200.0" layoutY="227.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="25.0" prefWidth="59.0" text="Ok." AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="227.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

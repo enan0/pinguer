@@ -6,19 +6,18 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import com.maxo.pinguer.MainApp;
+import com.maxo.pinguer.model.XLSFiles;
 
 public class RootLayoutController 
 {
 	private MainApp mainApp;
+	//private XLSFiles xlsFiles;
 	
     public void setMainApp(MainApp mainApp) 
     {
@@ -29,21 +28,28 @@ public class RootLayoutController
     private void handleOpen()
     {
     	FileChooser fileChooser = new FileChooser();
+  
+    	FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls");
+    	fileChooser.getExtensionFilters().add(extensionFilter);
     	
-    	FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls");
-    	fileChooser.getExtensionFilters().add(extFilter);
+    	File filePath = XLSFiles.getXLSFilePath();
+    	if ( filePath != null )
+    		fileChooser.setInitialDirectory( filePath.getParentFile() );
+
     	
     	File file = fileChooser.showOpenDialog( mainApp.getPrimaryStage() );
+    		
     	
     	if (file != null)
     	{
     		try
     		{
-    			mainApp.loadDevicesFromXLS(file);
+    			XLSFiles.loadDevicesFromXLS(file);
+    			//System.out.println( mainApp.getDevices().size() );
     		}
     		catch (Exception e)
     		{
-    			System.err.println("File not found.");
+    			System.err.println( "File not found." );
     		}
     	}
     	
@@ -52,23 +58,22 @@ public class RootLayoutController
     @FXML
     private void handleAbout() throws IOException
     {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("AboutLayout2.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource( "AboutLayout.fxml" ) );
         AnchorPane aboutWindow = (AnchorPane)loader.load();
-        //aboutWindow.setStyle("-fx-background-image: url('file://Duende_fumon.png');");
         
         AboutLayoutController controller = loader.getController();
         controller.setMainWindow(this);
         controller.setBackground();
         
         Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);  
+        stage.initModality( Modality.WINDOW_MODAL );  
         
         controller.setStage(stage);
         
-        Scene scene = new Scene(aboutWindow);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setTitle("About");
+        Scene scene = new Scene( aboutWindow );
+        stage.setScene( scene );
+        stage.setResizable( false );
+        stage.setTitle( "About" );
         
         stage.show(); 
     	
@@ -78,25 +83,31 @@ public class RootLayoutController
     private void handlePreferences() throws IOException
     {
        
-    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("PreferencesLayout.fxml"));
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource( "PreferencesLayout.fxml" ) );
          AnchorPane preferencesWindow = (AnchorPane)loader.load();
          
          PreferencesLayoutController controller = loader.getController();
-         controller.setMainWindow(this);
-         controller.setMainApp(mainApp);
+         controller.setMainWindow( this );
+         controller.setMainApp( mainApp );
          
          Stage stage = new Stage();
-         stage.initModality(Modality.APPLICATION_MODAL);
+         stage.initModality( Modality.APPLICATION_MODAL );
          
-         controller.setStage(stage);
+         controller.setStage( stage );
          
-         Scene scene = new Scene(preferencesWindow);
-         stage.setScene(scene);
-         stage.setResizable(false);
-         stage.setTitle("Preferences");
+         Scene scene = new Scene( preferencesWindow );
+         stage.setScene( scene );
+         stage.setResizable( false );
+         stage.setTitle( "Preferences" );
          stage.show(); 
     	
     	
+    }
+    
+    @FXML
+    private void handleClear()
+    {
+    	mainApp.getDevices().clear();
     }
     
     @FXML

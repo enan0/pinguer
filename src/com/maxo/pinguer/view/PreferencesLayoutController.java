@@ -1,6 +1,9 @@
 package com.maxo.pinguer.view;
 
+import java.util.ArrayList;
+
 import com.maxo.pinguer.MainApp;
+import com.maxo.pinguer.model.XLSFiles;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -14,6 +17,8 @@ public class PreferencesLayoutController
 	private RootLayoutController mainWindow;
 	
 	private MainApp mainApp;
+	
+	//private XLSFiles xlsFiles;
 	
 	private Stage preferencesLayoutStage;
 	
@@ -40,6 +45,7 @@ public class PreferencesLayoutController
 	@FXML
 	private void defaultPreferences()
 	{
+
 		if ( checkBoxDefault.isSelected() )
 		{
 			textFieldsheet.setText("CCTV");
@@ -48,8 +54,23 @@ public class PreferencesLayoutController
 			
 			textFieldColIP.setText("IP");
 		}
+
 	}
 
+	public PreferencesLayoutController( ) 
+	{
+		ArrayList<String> details = new ArrayList<String>();
+		
+		details = XLSFiles.getXLSDetails();
+		
+		//System.out.println( textFieldsheet.getText() );
+		
+		System.out.println( details.get(0) );
+		System.out.println( details.get(1) );
+		System.out.println( details.get(2) );
+		
+	}
+	
 	@FXML
 	private void handleTextFieldChange()
 	{
@@ -60,15 +81,20 @@ public class PreferencesLayoutController
 	@FXML
 	private void handleApply()
 	{
+		XLSFiles.setXLSDetails(
+				textFieldsheet.getText(), 
+				textFieldColLocation.getText(), 
+				textFieldColIP.getText()
+				);
 		
-		mainApp.setFileSheet(textFieldsheet.getText());
-		mainApp.setColumnLocation(textFieldColLocation.getText());
-		mainApp.setColumnIP(textFieldColIP.getText());
+		/*
+		ArrayList<String> details = new ArrayList<String>();
+		details = XLSFiles.getXLSDetails();
 		
-		
-		System.out.println( textFieldsheet.getText() );
-		System.out.println( textFieldColLocation.getText() );
-		System.out.println( textFieldColIP.getText() );
+		System.out.println( details.get(0) );
+		System.out.println( details.get(1) );
+		System.out.println( details.get(2) );
+		*/
 		
 		preferencesLayoutStage.close();
 		
@@ -82,6 +108,17 @@ public class PreferencesLayoutController
 	public void setStage(Stage stage) 
 	{
 		this.preferencesLayoutStage = stage;		
+	}
+	
+	private void showTextFields( ArrayList<String> details )
+	{
+		System.out.println( details.get(0) );
+		System.out.println( details.get(1) );
+		System.out.println( details.get(2) );
+		
+		textFieldsheet.setText( details.get(0) );
+		textFieldColLocation.setText( details.get(1) );
+		textFieldColIP.setText( details.get(2) );
 	}
 	
 }

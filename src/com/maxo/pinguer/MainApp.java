@@ -1,11 +1,9 @@
 package com.maxo.pinguer;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import com.maxo.pinguer.model.ReadDevices;
 import com.maxo.pinguer.model.ObservableDevice;
+import com.maxo.pinguer.model.XLSFiles;
 import com.maxo.pinguer.view.DeviceOverviewController;
 import com.maxo.pinguer.view.RootLayoutController;
 
@@ -26,50 +24,19 @@ public class MainApp extends Application
 	private BorderPane rootLayout;
 	
 	private ObservableList<ObservableDevice> devices = FXCollections.observableArrayList();
-	
-	private String nameFileSheet = "CCTV";
-	private String nameColLocation = "Ubicación";
-	private String nameColIP = "IP";
+
 	
 	public MainApp()
 	{
+		devices.addAll( 
+				new ObservableDevice("Calle Prueba", "192.168.200.40")
+				);
 		
-		devices.addAll( new ObservableDevice("Calle 1", "192.168.200.30"), 
-						new ObservableDevice("Calle 2", "192.168.200.31"),
-						new ObservableDevice("Calle 3", "192.168.200.32"),
-						new ObservableDevice("Calle 4", "192.168.200.50")			
-					  );
+		XLSFiles.setMainApp( this );
 		
 	}
 	
-	public void loadDevicesFromXLS( File file ) throws IOException
-	{
 
-		ReadDevices redesXLS = new ReadDevices( file.getAbsolutePath() );
-		
-		redesXLS.setFileSheet( nameFileSheet );
-		redesXLS.inputDevicesColumns( nameColLocation, nameColIP );
-		ArrayList<ObservableDevice> cameras = new ArrayList<ObservableDevice>( redesXLS.readXLSFile() );
-
-		devices.clear();
-		devices.addAll(cameras);
-		
-	}
-	
-	public void setFileSheet( String fileSheet )
-	{
-		this.nameFileSheet = fileSheet;
-	}
-	
-	public void setColumnIP( String colIP) 
-	{
-		this.nameColIP = colIP;		
-	}
-	
-	public void setColumnLocation( String colLocation ) 
-	{
-		this.nameColLocation = colLocation;
-	}
 	
 	public ObservableList<ObservableDevice> getDevices() 
 	{
@@ -119,7 +86,7 @@ public class MainApp extends Application
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation( MainApp.class.getResource("view/DeviceOverview2.fxml") );
+			loader.setLocation( MainApp.class.getResource( "view/DeviceOverview.fxml" ) );
 			AnchorPane deviceOverview = (AnchorPane) loader.load();
 			
 			rootLayout.setCenter(deviceOverview);
@@ -145,10 +112,6 @@ public class MainApp extends Application
 		launch(args);
 	}
 }
-
-
-
-
 
 
 

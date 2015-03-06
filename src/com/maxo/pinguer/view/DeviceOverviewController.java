@@ -2,6 +2,8 @@ package com.maxo.pinguer.view;
 
 import java.io.IOException;
 
+import sun.nio.cs.ext.ISCII91;
+
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.ObservableDevice;
 
@@ -57,6 +59,7 @@ public class DeviceOverviewController
 	private ProgressIndicator loadingInd;
 	
 	private MainApp mainApp;
+	
 	private static boolean isRefreshing;
 	
 
@@ -71,8 +74,14 @@ public class DeviceOverviewController
 		{
 			labelLocation.setText( device.getLocation().get() );
 			labelIP.setText( device.getIP().get() );
+			
 			Boolean alive = device.getAlive().get();
-			labelStatus.setText( String.valueOf( alive ) );
+			String status;
+			if ( alive )
+				status = "OK.";
+			else
+				status = "APAGADO.";
+			labelStatus.setText( status );
 		}
 		else
 		{
@@ -93,12 +102,15 @@ public class DeviceOverviewController
 	@FXML
 	private void handleRefresh()
 	{
-
 		if ( ! isRefreshing )
+		{
 			isRefreshing = true;
+		}
 		else
+		{
 			return;
-					
+		}
+		
 		loadingInd.setVisible(true);
 		//btnRefresh.setText("Cancel");
 		
@@ -109,6 +121,18 @@ public class DeviceOverviewController
 			 {
 				 refresh();
 				 return null;
+			 }
+			 
+			 @Override
+			 protected void cancelled()
+			 {
+				 super.cancelled();
+			 }
+			 
+			 @Override
+			 protected void succeeded()
+			 {
+				 super.succeeded();
 			 }
 		 };
 		 
@@ -128,12 +152,16 @@ public class DeviceOverviewController
 		});
 		 
 
-		 new Thread(task).start();
+		new Thread(task).start();
+ 
 	}
 
 	
 	private void showDevicesLength() 
 	{
+		
+		labelCantDevices.setText("Cant. ");
+		System.out.println( mainApp.getDevices().size() );
 		//Integer cantDevices = mainApp.getDevices().size();
 		//ObservableDevice dev = mainApp.getDevices().get(0);
 		//labelCantDevices.setText( String.valueOf(cantDevices) );

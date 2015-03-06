@@ -30,9 +30,9 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="textFieldsheet" onKeyPressed="#handleTextFieldChange" prefHeight="25.0" prefWidth="108.0" promptText="hoja de excel" text="CCTV" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="textFieldColLocation" onKeyPressed="#handleTextFieldChange" promptText="columna ubicacion" text="Ubicación" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-            <TextField fx:id="textFieldColIP" onKeyPressed="#handleTextFieldChange" promptText="columna ip" text="IP" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+            <TextField fx:id="textFieldsheet" onKeyPressed="#handleTextFieldChange" prefHeight="25.0" prefWidth="108.0" promptText="hoja de excel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="textFieldColLocation" onKeyPressed="#handleTextFieldChange" promptText="columna ubicacion" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <TextField fx:id="textFieldColIP" onKeyPressed="#handleTextFieldChange" promptText="columna ip" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre columnas" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="20.0" />
