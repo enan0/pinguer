@@ -2,8 +2,6 @@ package com.maxo.pinguer.view;
 
 import java.io.IOException;
 
-import sun.nio.cs.ext.ISCII91;
-
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.ObservableDevice;
 
@@ -223,6 +221,8 @@ public class DeviceOverviewController
 		this.mainApp = mainApp;
 		
 		deviceTable.setItems( mainApp.getDevices() );
+		
+		deviceTable.setPlaceholder( new Label( "Developed by Maxo \n\n  File  > Load File" ) );
 	}
 	
 }

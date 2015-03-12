@@ -23,33 +23,37 @@ public class MainApp extends Application
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	
-	private ObservableList<ObservableDevice> devices = FXCollections.observableArrayList();
-
+	private ObservableList<ObservableDevice> devices = FXCollections.observableArrayList( );
+	private XLSFiles xlsFile; // = new XLSFiles();
 	
 	public MainApp()
 	{
+		this.xlsFile = new XLSFiles();
+		
+		/*
 		devices.addAll( 
 				new ObservableDevice("Calle Prueba", "192.168.200.40")
 				);
-		
-		XLSFiles.setMainApp( this );
-		
+		 */
 	}
 	
-
 	
 	public ObservableList<ObservableDevice> getDevices() 
 	{
 		return devices;
 	}
 	
+	public XLSFiles getXLSFile() 
+	{
+		return xlsFile;
+	}
 	
 	@Override
 	public void start(Stage primaryStage) 
 	{
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Pinguer");
-		Image icon = new Image( getClass().getResourceAsStream("Pinguer.jpg") );
+		Image icon = new Image( getClass().getResourceAsStream( "Pinguer.jpg" ) );
 		this.primaryStage.getIcons().add(icon);
 		
 		initRootLayout();
@@ -70,7 +74,7 @@ public class MainApp extends Application
 			primaryStage.setScene(scene);
 			
 			RootLayoutController controller = loader.getController();
-			controller.setMainApp(this);
+			controller.setMainApp( this );
 			
 			primaryStage.show();
 		}
@@ -92,7 +96,7 @@ public class MainApp extends Application
 			rootLayout.setCenter(deviceOverview);
 			
 			DeviceOverviewController controller = loader.getController();
-			controller.setMainApp(this);
+			controller.setMainApp( this );
 			
 		}
 		catch (IOException e)
