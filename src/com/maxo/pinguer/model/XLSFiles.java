@@ -15,40 +15,45 @@ import jxl.read.biff.BiffException;
 
 public class XLSFiles 
 {
-	private String nameFileSheet;
-	private String nameColLocation;
-	private String nameColIP;
+	public static final int SHEET = 0;
+	public static final int IP = 1;
+	public static final int LOCATION = 2;
 	
-	private String inputFile;
+	private static String nameFileSheet = "CCTV";
+	private static String nameColLocation = "Ubicación";
+	private static String nameColIP = "IP";
+	
+	private static String inputFile;
 
-
+/*
 	public XLSFiles( )
 	{
 		this.nameFileSheet = "CCTV";
 		this.nameColLocation = "Ubicación";
 		this.nameColIP = "IP";
 	}
+*/
 	
-	public void setInputFile( String inputFile ) 
+	public static void setInputFile( String _inputFile ) 
 	{
-		this.inputFile = inputFile;
+		inputFile = _inputFile;
 	}
 	
 	
-	public Collection<ObservableDevice> loadDevicesFromXLS( ) throws IOException
+	public static Collection<ObservableDevice> loadDevicesFromXLS( ) throws IOException
 	{
-		ArrayList<ObservableDevice> cameras = new ArrayList<ObservableDevice>( readXLSFile() );
+		ArrayList<ObservableDevice> devices = new ArrayList<ObservableDevice>( readXLSFile() );
 		
-		File file = new File( this.inputFile );
+		File file = new File( inputFile );
 		setXLSFilePath( file );
 		
-		//System.out.println( cameras.size( ) );
+		System.out.println( devices.size( ) );
 				
-		return cameras;
+		return devices;
 	}
 	
 	
-	public File getXLSFilePath()
+	public static File getXLSFilePath()
 	{
 		Preferences prefs = Preferences.userNodeForPackage( XLSFiles.class);
 		String filePath = prefs.get("filePath", null);
@@ -60,7 +65,7 @@ public class XLSFiles
 	}
 	
 	
-	public void setXLSFilePath( File file ) 
+	public static void setXLSFilePath( File file ) 
 	{
 		Preferences prefs = Preferences.userNodeForPackage( XLSFiles.class);
 		if ( file != null )
@@ -71,32 +76,32 @@ public class XLSFiles
 	}
 	
 	
-	public void setXLSDetails( String fileSheet, String columnIP, String columnLocation ) 
+	public static void setXLSAttributes( String fileSheet, String columnIP, String columnLocation ) 
 	{
-		this.nameFileSheet = fileSheet;
-		this.nameColIP = columnIP;
-		this.nameColLocation = columnLocation;
+		nameFileSheet = fileSheet;
+		nameColIP = columnIP;
+		nameColLocation = columnLocation;
 	}
 	
 	
-	public Collection<String> getXLSDetails()
+	public static Collection<String> getXLSAttributes()
 	{
 		Collection<String> details = new ArrayList<String>();
 		
-		details.add( this.nameFileSheet );
-		details.add( this.nameColIP );
-		details.add( this.nameColLocation );
+		details.add( nameFileSheet );
+		details.add( nameColIP );
+		details.add( nameColLocation );
 		
 		return details; 
 		
 	}
 	
 	
-	private  ArrayList<ObservableDevice> readXLSFile( ) throws IOException  
+	private  static ArrayList<ObservableDevice> readXLSFile( ) throws IOException  
 	{
 		ArrayList<ObservableDevice> devices = new ArrayList<>();  
 		  
-	    File inputWorkbook = new File( this.inputFile );
+	    File inputWorkbook = new File( inputFile );
 	    Workbook w;
 	    
 		//Establezco el encoding del workbook para que me tome correctamente las tildes :D
@@ -107,15 +112,15 @@ public class XLSFiles
 		{
 		  w = Workbook.getWorkbook( inputWorkbook, wSettings );
 		  // Busco la Hoja CCTV o Carteles
-		  Sheet sheetDevices = w.getSheet( this.nameFileSheet );
+		  Sheet sheetDevices = w.getSheet( nameFileSheet );
 		
 		  // Busco la Celda con el IP
-		  Cell cellIP = sheetDevices.findCell( this.nameColIP );
+		  Cell cellIP = sheetDevices.findCell( nameColIP );
 		  int colIP = cellIP.getColumn();
 		  Cell[] columnIP = sheetDevices.getColumn(colIP);
 		
 		  // Busco la Celda con la Ubicacion
-		  Cell cellUbic = sheetDevices.findCell( this.nameColLocation );
+		  Cell cellUbic = sheetDevices.findCell( nameColLocation );
 		  int colUbic = cellUbic.getColumn();
 		  Cell[] columnUbic = sheetDevices.getColumn(colUbic);
 		  

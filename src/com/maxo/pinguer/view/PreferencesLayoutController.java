@@ -3,6 +3,7 @@ package com.maxo.pinguer.view;
 import java.util.ArrayList;
 
 import com.maxo.pinguer.MainApp;
+import com.maxo.pinguer.model.XLSFiles;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -20,7 +21,7 @@ public class PreferencesLayoutController
 	private Stage preferencesLayoutStage;
 	
 	@FXML
-	private TextField textFieldsheet;
+	private TextField textFieldSheet;
 	
 	@FXML
 	private TextField textFieldColLocation;
@@ -45,7 +46,7 @@ public class PreferencesLayoutController
 
 		if ( checkBoxDefault.isSelected() )
 		{
-			textFieldsheet.setText("CCTV");
+			textFieldSheet.setText("CCTV");
 			
 			textFieldColLocation.setText("Ubicación");
 			
@@ -58,19 +59,19 @@ public class PreferencesLayoutController
 	@FXML
 	private void initialize( )
 	{
-	
-		ArrayList<String> details = new ArrayList<String>();
+
+		ArrayList<String> attribs = new ArrayList<String>();
 		
-		details = (ArrayList<String>) mainApp.getXLSFile().getXLSDetails();
+		attribs = (ArrayList<String>) XLSFiles.getXLSAttributes();
+
+		textFieldSheet.setText( attribs.get( XLSFiles.SHEET ) );
+		textFieldColLocation.setText( attribs.get( XLSFiles.LOCATION ) );
+		textFieldColIP.setText( attribs.get( XLSFiles.IP ) );
 		
-		textFieldsheet.setText( details.get(0) );
-		textFieldColLocation.setText( details.get(1) );
-		textFieldColIP.setText( details.get(2) );
+		System.out.println( attribs.get( XLSFiles.SHEET ) );
+		System.out.println( attribs.get( XLSFiles.IP ) );
+		System.out.println( attribs.get( XLSFiles.LOCATION ) );
 		
-		System.out.println( details.get(0) );
-		System.out.println( details.get(1) );
-		System.out.println( details.get(2) );
-	
 	}
 
 	
@@ -84,20 +85,20 @@ public class PreferencesLayoutController
 	@FXML
 	private void handleApply(  )
 	{
-		mainApp.getXLSFile().setXLSDetails(
-				textFieldsheet.getText(), 
+		XLSFiles.setXLSAttributes(
+				textFieldSheet.getText(), 
 				textFieldColLocation.getText(), 
 				textFieldColIP.getText()
 				);
 		
-		
+		/*
 		ArrayList<String> details = new ArrayList<String>();
-		details = (ArrayList<String>) mainApp.getXLSFile().getXLSDetails();
+		details = (ArrayList<String>) XLSFiles.getXLSDetails();
 		
 		System.out.println( details.get(0) );
 		System.out.println( details.get(1) );
 		System.out.println( details.get(2) );
-		
+		*/
 		
 		preferencesLayoutStage.close();
 		

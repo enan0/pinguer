@@ -24,11 +24,11 @@ public class MainApp extends Application
 	private BorderPane rootLayout;
 	
 	private ObservableList<ObservableDevice> devices = FXCollections.observableArrayList( );
-	private XLSFiles xlsFile; // = new XLSFiles();
+	//private XLSFiles xlsFile; // = new XLSFiles();
 	
 	public MainApp()
 	{
-		this.xlsFile = new XLSFiles();
+		//this.xlsFile = new XLSFiles();
 		
 		/*
 		devices.addAll( 
@@ -43,10 +43,12 @@ public class MainApp extends Application
 		return devices;
 	}
 	
+	/*
 	public XLSFiles getXLSFile() 
 	{
 		return xlsFile;
 	}
+	*/
 	
 	@Override
 	public void start(Stage primaryStage) 
