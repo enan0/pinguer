@@ -3,7 +3,7 @@ package com.maxo.pinguer.view;
 import java.util.ArrayList;
 
 import com.maxo.pinguer.MainApp;
-import com.maxo.pinguer.model.XLSFiles;
+import com.maxo.pinguer.model.ReadDevices;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -62,15 +62,15 @@ public class PreferencesLayoutController
 
 		ArrayList<String> attribs = new ArrayList<String>();
 		
-		attribs = (ArrayList<String>) XLSFiles.getXLSAttributes();
+		attribs = (ArrayList<String>) ReadDevices.getXLSAttributes();
 
-		textFieldSheet.setText( attribs.get( XLSFiles.SHEET ) );
-		textFieldColLocation.setText( attribs.get( XLSFiles.LOCATION ) );
-		textFieldColIP.setText( attribs.get( XLSFiles.IP ) );
+		textFieldSheet.setText( attribs.get( ReadDevices.SHEET ) );
+		textFieldColLocation.setText( attribs.get( ReadDevices.LOCATION ) );
+		textFieldColIP.setText( attribs.get( ReadDevices.IP ) );
 		
-		System.out.println( attribs.get( XLSFiles.SHEET ) );
-		System.out.println( attribs.get( XLSFiles.IP ) );
-		System.out.println( attribs.get( XLSFiles.LOCATION ) );
+		System.out.println( attribs.get( ReadDevices.SHEET ) );
+		System.out.println( attribs.get( ReadDevices.IP ) );
+		System.out.println( attribs.get( ReadDevices.LOCATION ) );
 		
 	}
 
@@ -85,7 +85,7 @@ public class PreferencesLayoutController
 	@FXML
 	private void handleApply(  )
 	{
-		XLSFiles.setXLSAttributes(
+		ReadDevices.setXLSAttributes(
 				textFieldSheet.getText(), 
 				textFieldColLocation.getText(), 
 				textFieldColIP.getText()

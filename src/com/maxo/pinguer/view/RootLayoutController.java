@@ -12,7 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import com.maxo.pinguer.MainApp;
-import com.maxo.pinguer.model.XLSFiles;
+import com.maxo.pinguer.model.ReadDevices;
 
 
 public class RootLayoutController 
@@ -33,12 +33,12 @@ public class RootLayoutController
     	FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls");
     	fileChooser.getExtensionFilters().add(extensionFilter);
     	    	
-   		File filePath = XLSFiles.getXLSFilePath();
+   		File filePath = ReadDevices.getXLSFilePath();
     	if ( filePath != null )
     		fileChooser.setInitialDirectory( filePath.getParentFile() );
     	
     	File file = fileChooser.showOpenDialog( mainApp.getPrimaryStage() );
-    	XLSFiles.setInputFile( file.getAbsolutePath() );
+    	ReadDevices.setInputFile( file.getAbsolutePath() );
     		
     	
     	if (file != null)
@@ -47,7 +47,7 @@ public class RootLayoutController
     		{
     			/*  TODO REVISAR ESTA PARTEEEEEEEEEEEEEEEEEEEEEEEEEEEE  */
     			mainApp.getDevices().clear();
-    			mainApp.getDevices().addAll( XLSFiles.loadDevicesFromXLS( ) );
+    			mainApp.getDevices().addAll( ReadDevices.loadDevicesFromXLS( ) );
 
     		}
     		catch (Exception e)

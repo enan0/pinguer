@@ -10,7 +10,7 @@ import javafx.beans.property.StringProperty;
 
 import com.maxo.pinguer.model.IPv4;
 
-public class ObservableDevice extends IPv4
+public class ObservableDevice
 {
 	private final StringProperty location;
 	private final StringProperty ip;
@@ -33,21 +33,6 @@ public class ObservableDevice extends IPv4
 		return this.ip;
 	}
 	
-	/*
-	public StringProperty isAlive() throws IOException, InterruptedException
-	{	
-		try
-		{
-			return new SimpleStringProperty( String.valueOf( IPv4.pingIP( this.ip.get() ) ) );
-		}
-		catch (Exception e)
-		{
-			//e.printStackTrace();
-            return new SimpleStringProperty( "false" );
-		}
-	
-	}
-	*/
 	
 	public void isAlive() throws IOException, InterruptedException
 	{
@@ -60,8 +45,3 @@ public class ObservableDevice extends IPv4
 	}
 	
 }
-
-
-
-
-

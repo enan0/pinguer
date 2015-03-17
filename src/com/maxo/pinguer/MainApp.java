@@ -3,7 +3,7 @@ package com.maxo.pinguer;
 import java.io.IOException;
 
 import com.maxo.pinguer.model.ObservableDevice;
-import com.maxo.pinguer.model.XLSFiles;
+import com.maxo.pinguer.model.ReadDevices;
 import com.maxo.pinguer.view.DeviceOverviewController;
 import com.maxo.pinguer.view.RootLayoutController;
 
@@ -27,9 +27,7 @@ public class MainApp extends Application
 	//private XLSFiles xlsFile; // = new XLSFiles();
 	
 	public MainApp()
-	{
-		//this.xlsFile = new XLSFiles();
-		
+	{		
 		/*
 		devices.addAll( 
 				new ObservableDevice("Calle Prueba", "192.168.200.40")
@@ -118,10 +116,4 @@ public class MainApp extends Application
 		launch(args);
 	}
 }
-
-
-
-
-
-
 

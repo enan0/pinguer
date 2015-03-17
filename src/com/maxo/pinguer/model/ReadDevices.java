@@ -3,6 +3,8 @@ package com.maxo.pinguer.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.prefs.Preferences;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -11,30 +13,91 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
-public class ReadDevices {
+public class ReadDevices 
+{
+	public static final int SHEET = 0;
+	public static final int IP = 1;
+	public static final int LOCATION = 2;
+	
+	private static String nameFileSheet = "CCTV";
+	private static String nameColLocation = "Ubicación";
+	private static String nameColIP = "IP";
+	
+	private static String inputFile;
 
-	private String inputFile;
-	private String sheet;
-	private String column1;
-	private String column2;
+	/*
+	public XLSFiles( )
+	{
+		this.nameFileSheet = "CCTV";
+		this.nameColLocation = "Ubicación";
+		this.nameColIP = "IP";
+	}
+	*/
 	
-	public ReadDevices( String inputFile ) 
+	public static void setInputFile( String _inputFile ) 
 	{
-		this.inputFile = inputFile;
+		inputFile = _inputFile;
 	}
 	
-	public void setFileSheet( String sheet )
+	
+	public static Collection<ObservableDevice> loadDevicesFromXLS( ) throws IOException
 	{
-		this.sheet = sheet;
+		ArrayList<ObservableDevice> devices = new ArrayList<ObservableDevice>( readXLSFile() );
+		
+		File file = new File( inputFile );
+		setXLSFilePath( file );
+		
+		System.out.println( devices.size( ) );
+				
+		return devices;
 	}
-	  
-	public void inputDevicesColumns( String deviceLocation, String deviceIP)
+	
+	
+	public static File getXLSFilePath()
 	{
-		this.column1 = deviceIP;
-		this.column2 = deviceLocation;
+		Preferences prefs = Preferences.userNodeForPackage( ReadDevices.class);
+		String filePath = prefs.get("filePath", null);
+		
+		if ( filePath != null )
+			return new File(filePath);
+		else
+			return null;
 	}
-  
-	public ArrayList<ObservableDevice> readXLSFile( ) throws IOException  
+	
+	
+	public static void setXLSFilePath( File file ) 
+	{
+		Preferences prefs = Preferences.userNodeForPackage( ReadDevices.class);
+		if ( file != null )
+			prefs.put("filePath", file.getPath() );
+		else
+			prefs.remove("filePath");
+		
+	}
+	
+	
+	public static void setXLSAttributes( String fileSheet, String columnIP, String columnLocation ) 
+	{
+		nameFileSheet = fileSheet;
+		nameColIP = columnIP;
+		nameColLocation = columnLocation;
+	}
+	
+	
+	public static Collection<String> getXLSAttributes()
+	{
+		Collection<String> details = new ArrayList<String>();
+		
+		details.add( nameFileSheet );
+		details.add( nameColIP );
+		details.add( nameColLocation );
+		
+		return details; 
+		
+	}
+	
+	
+	private  static ArrayList<ObservableDevice> readXLSFile( ) throws IOException  
 	{
 		ArrayList<ObservableDevice> devices = new ArrayList<>();  
 		  
@@ -49,15 +112,15 @@ public class ReadDevices {
 		{
 		  w = Workbook.getWorkbook( inputWorkbook, wSettings );
 		  // Busco la Hoja CCTV o Carteles
-		  Sheet sheetDevices = w.getSheet( sheet );
+		  Sheet sheetDevices = w.getSheet( nameFileSheet );
 		
 		  // Busco la Celda con el IP
-		  Cell cellIP = sheetDevices.findCell( column1 );
+		  Cell cellIP = sheetDevices.findCell( nameColIP );
 		  int colIP = cellIP.getColumn();
 		  Cell[] columnIP = sheetDevices.getColumn(colIP);
 		
 		  // Busco la Celda con la Ubicacion
-		  Cell cellUbic = sheetDevices.findCell( column2 );
+		  Cell cellUbic = sheetDevices.findCell( nameColLocation );
 		  int colUbic = cellUbic.getColumn();
 		  Cell[] columnUbic = sheetDevices.getColumn(colUbic);
 		  
@@ -86,6 +149,6 @@ public class ReadDevices {
 			//retorno la lista con los datos leídos.
 		    return devices;
 	}
-  
-  
+
+	
 }

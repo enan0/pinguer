@@ -1,6 +1,5 @@
 package com.maxo.pinguer.view;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -38,7 +37,6 @@ public class AboutLayoutController
     public void setBackground()
     {
 		Image backgroundImage = new Image( getClass().getResourceAsStream("Duende_fumon.png") );
-		//System.out.println( getClass().getResourceAsStream("Duende_fumon.png") );
-    	background.setImage( backgroundImage ); 	
+		background.setImage( backgroundImage ); 	
     }
 }
