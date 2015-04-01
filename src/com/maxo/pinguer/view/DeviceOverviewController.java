@@ -1,6 +1,7 @@
 package com.maxo.pinguer.view;
 
 import java.io.IOException;
+import java.util.Observable;
 
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.ObservableDevice;
@@ -18,6 +19,10 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.paint.Color;
 
 
@@ -94,7 +99,13 @@ public class DeviceOverviewController
 	private void refresh() throws IOException, InterruptedException
 	{
 		for ( ObservableDevice dev : mainApp.getDevices() )
+		{	
 			dev.isAlive();
+			
+			/* TODO: AUTOSCROLL AL ACTUALIZAR, en realidad resaltar por cual va */
+			//deviceTable.scrollTo(dev);
+		}
+
 	}
 	
 	@FXML
@@ -175,6 +186,8 @@ public class DeviceOverviewController
 		columnIP.setCellValueFactory(cellData -> cellData.getValue().getIP());
 		columnStatus.setCellValueFactory(cellData -> cellData.getValue().getAlive() );
 		
+		
+		
 		columnStatus.setCellFactory( column -> 
 			{ return new TableCell<ObservableDevice, Boolean>()
 					{ 	@Override
@@ -188,7 +201,7 @@ public class DeviceOverviewController
 								setStyle("");
 							}
 							else
-							{
+							{								
 								if ( item == true )
 								{
 									setText("OK");
@@ -223,6 +236,13 @@ public class DeviceOverviewController
 		deviceTable.setItems( mainApp.getDevices() );
 		
 		deviceTable.setPlaceholder( new Label( "Developed by Maxo \n\n  File  > Load File" ) );
+		
+		/* TODO: REVISAR EL TEMA DEL BACKGROUND PARA LA LISTA VACIA
+		Image image = new Image( getClass().getResourceAsStream("Duende_fumon.png") );
+		BackgroundImage backgroundImage = new BackgroundImage( image, null, null, null, null);
+		Background backG = new Background( backgroundImage );
+		deviceTable.setBackground( backG );
+		*/
 	}
 	
 }

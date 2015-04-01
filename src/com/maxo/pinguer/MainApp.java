@@ -1,9 +1,11 @@
 package com.maxo.pinguer;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import com.maxo.pinguer.model.ObservableDevice;
-import com.maxo.pinguer.model.ReadDevices;
+import com.maxo.pinguer.model.DevicesFile;
 import com.maxo.pinguer.view.DeviceOverviewController;
 import com.maxo.pinguer.view.RootLayoutController;
 
@@ -24,7 +26,7 @@ public class MainApp extends Application
 	private BorderPane rootLayout;
 	
 	private ObservableList<ObservableDevice> devices = FXCollections.observableArrayList( );
-	//private XLSFiles xlsFile; // = new XLSFiles();
+	private DevicesFile devicesFile;
 	
 	public MainApp()
 	{		
@@ -41,18 +43,22 @@ public class MainApp extends Application
 		return devices;
 	}
 	
-	/*
-	public XLSFiles getXLSFile() 
+	
+	public void setDevicesFile( DevicesFile file ) 
 	{
-		return xlsFile;
+		this.devicesFile = file;
 	}
-	*/
+	
+	public DevicesFile getDevicesFile( ) 
+	{
+		return devicesFile;
+	}	
 	
 	@Override
 	public void start(Stage primaryStage) 
 	{
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Pinguer");
+		this.primaryStage.setTitle( "Pinguer" );
 		Image icon = new Image( getClass().getResourceAsStream( "Pinguer.jpg" ) );
 		this.primaryStage.getIcons().add(icon);
 		
@@ -105,6 +111,29 @@ public class MainApp extends Application
 		}
 		
 	}
+	
+	
+	public void setFilePath( File file ) 
+	{
+		Preferences prefs = Preferences.userNodeForPackage( DevicesFile.class);
+		if ( file != null )
+			prefs.put("filePath", file.getPath() );
+		else
+			prefs.remove("filePath");	
+	}
+	
+	
+	public File getFilePath()
+	{
+		Preferences prefs = Preferences.userNodeForPackage( DevicesFile.class);
+		String filePath = prefs.get("filePath", null);
+		
+		if ( filePath != null )
+			return new File(filePath);
+		else
+			return null;
+	}
+	
 	
 	public Stage getPrimaryStage()
 	{

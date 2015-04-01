@@ -10,9 +10,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import com.maxo.pinguer.MainApp;
-import com.maxo.pinguer.model.ReadDevices;
+import com.maxo.pinguer.model.DevicesFile;
 
 
 public class RootLayoutController 
@@ -33,12 +34,12 @@ public class RootLayoutController
     	FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls");
     	fileChooser.getExtensionFilters().add(extensionFilter);
     	    	
-   		File filePath = ReadDevices.getXLSFilePath();
+   		File filePath = mainApp.getFilePath();
     	if ( filePath != null )
     		fileChooser.setInitialDirectory( filePath.getParentFile() );
     	
     	File file = fileChooser.showOpenDialog( mainApp.getPrimaryStage() );
-    	ReadDevices.setInputFile( file.getAbsolutePath() );
+    	DevicesFile devicesFiles = new DevicesFile( file.getAbsolutePath() );
     		
     	
     	if (file != null)
@@ -47,7 +48,9 @@ public class RootLayoutController
     		{
     			/*  TODO REVISAR ESTA PARTEEEEEEEEEEEEEEEEEEEEEEEEEEEE  */
     			mainApp.getDevices().clear();
-    			mainApp.getDevices().addAll( ReadDevices.loadDevicesFromXLS( ) );
+    			mainApp.getDevices().addAll( devicesFiles.loadDevices( ) );
+    			mainApp.setFilePath( file );
+    			mainApp.setDevicesFile( devicesFiles );
 
     		}
     		catch (Exception e)
@@ -70,6 +73,7 @@ public class RootLayoutController
         
         Stage stage = new Stage();
         stage.initModality( Modality.WINDOW_MODAL );  
+        //stage.initStyle( StageStyle.UTILITY );
         
         controller.setStage(stage);
         
@@ -85,17 +89,22 @@ public class RootLayoutController
     @FXML
     private void handlePreferences() throws IOException
     {
-       
+    	 //System.out.println("Acabo de entrar a handlePreferences");    	 
     	 FXMLLoader loader = new FXMLLoader(getClass().getResource( "PreferencesLayout.fxml" ) );
+    	 //System.out.println("Recién cree el FXMLoader y lo cargué");
          AnchorPane preferencesWindow = (AnchorPane)loader.load();
+         //System.out.println("Recién cree el AnchorPane y lo cargué");
          
+         //System.out.println("Previo load Controller");
          PreferencesLayoutController controller = loader.getController();
          controller.setMainWindow( this );
          
          Stage stage = new Stage();
          stage.initModality( Modality.APPLICATION_MODAL );
          
+         //System.out.println("Previo setStage");
          controller.setStage( stage );
+         //System.out.println("Posterior setStage");
          
          Scene scene = new Scene( preferencesWindow );
          stage.setScene( scene );

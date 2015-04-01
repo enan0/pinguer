@@ -3,8 +3,7 @@ package com.maxo.pinguer.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.prefs.Preferences;
+import java.util.List;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -13,93 +12,53 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
-public class ReadDevices 
+public class DevicesFile 
 {
 	public static final int SHEET = 0;
 	public static final int IP = 1;
 	public static final int LOCATION = 2;
 	
-	private static String nameFileSheet = "CCTV";
-	private static String nameColLocation = "Ubicación";
-	private static String nameColIP = "IP";
+	private String nameFileSheet; // = "CCTV";
+	private String nameColLocation; // = "Ubicación";
+	private String nameColIP; // = "IP";
 	
-	private static String inputFile;
+	private String inputFile;
 
-	/*
-	public XLSFiles( )
+	
+	public DevicesFile( String inputFile )
 	{
+		this.inputFile = inputFile;
+		
 		this.nameFileSheet = "CCTV";
 		this.nameColLocation = "Ubicación";
 		this.nameColIP = "IP";
 	}
-	*/
 	
-	public static void setInputFile( String _inputFile ) 
+
+	public void setAttributes( String fileSheet, String columnIP, String columnLocation ) 
 	{
-		inputFile = _inputFile;
+		this.nameFileSheet = fileSheet;
+		this.nameColIP = columnIP;
+		this.nameColLocation = columnLocation;
 	}
 	
 	
-	public static Collection<ObservableDevice> loadDevicesFromXLS( ) throws IOException
+	public List<String> getAttributes()
 	{
-		ArrayList<ObservableDevice> devices = new ArrayList<ObservableDevice>( readXLSFile() );
+		List<String> details = new ArrayList<String>();
 		
-		File file = new File( inputFile );
-		setXLSFilePath( file );
-		
-		System.out.println( devices.size( ) );
-				
-		return devices;
-	}
-	
-	
-	public static File getXLSFilePath()
-	{
-		Preferences prefs = Preferences.userNodeForPackage( ReadDevices.class);
-		String filePath = prefs.get("filePath", null);
-		
-		if ( filePath != null )
-			return new File(filePath);
-		else
-			return null;
-	}
-	
-	
-	public static void setXLSFilePath( File file ) 
-	{
-		Preferences prefs = Preferences.userNodeForPackage( ReadDevices.class);
-		if ( file != null )
-			prefs.put("filePath", file.getPath() );
-		else
-			prefs.remove("filePath");
-		
-	}
-	
-	
-	public static void setXLSAttributes( String fileSheet, String columnIP, String columnLocation ) 
-	{
-		nameFileSheet = fileSheet;
-		nameColIP = columnIP;
-		nameColLocation = columnLocation;
-	}
-	
-	
-	public static Collection<String> getXLSAttributes()
-	{
-		Collection<String> details = new ArrayList<String>();
-		
-		details.add( nameFileSheet );
-		details.add( nameColIP );
-		details.add( nameColLocation );
+		details.add( this.nameFileSheet );
+		details.add( this.nameColIP );
+		details.add( this.nameColLocation );
 		
 		return details; 
 		
 	}
 	
 	
-	private  static ArrayList<ObservableDevice> readXLSFile( ) throws IOException  
+	public  List<ObservableDevice> loadDevices( ) throws IOException  
 	{
-		ArrayList<ObservableDevice> devices = new ArrayList<>();  
+		List<ObservableDevice> devices = new ArrayList<>();  
 		  
 	    File inputWorkbook = new File( inputFile );
 	    Workbook w;

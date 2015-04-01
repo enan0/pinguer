@@ -1,9 +1,10 @@
 package com.maxo.pinguer.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.maxo.pinguer.MainApp;
-import com.maxo.pinguer.model.ReadDevices;
+import com.maxo.pinguer.model.DevicesFile;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -60,45 +61,66 @@ public class PreferencesLayoutController
 	private void initialize( )
 	{
 
-		ArrayList<String> attribs = new ArrayList<String>();
-		
-		attribs = (ArrayList<String>) ReadDevices.getXLSAttributes();
+		// List<String> attribs = new ArrayList<String>();
+		System.out.println("I'm in");
 
-		textFieldSheet.setText( attribs.get( ReadDevices.SHEET ) );
-		textFieldColLocation.setText( attribs.get( ReadDevices.LOCATION ) );
-		textFieldColIP.setText( attribs.get( ReadDevices.IP ) );
-		
-		System.out.println( attribs.get( ReadDevices.SHEET ) );
-		System.out.println( attribs.get( ReadDevices.IP ) );
-		System.out.println( attribs.get( ReadDevices.LOCATION ) );
-		
+/*		
+		try
+		{
+			//DevicesFile devFile = mainApp.getDevicesFile();
+			attribs = (ArrayList<String>) mainApp.getDevicesFile().getAttributes();
+			
+			textFieldSheet.setText( attribs.get( DevicesFile.SHEET ) );
+			textFieldColLocation.setText( attribs.get( DevicesFile.LOCATION ) );
+			textFieldColIP.setText( attribs.get( DevicesFile.IP ) );
+			
+			System.out.println( attribs.get( DevicesFile.SHEET ) );
+			System.out.println( attribs.get( DevicesFile.IP ) );
+			System.out.println( attribs.get( DevicesFile.LOCATION ) );
+		}
+		catch(Exception e)
+		{
+			System.err.println("Primero abra un archivo.");
+			System.out.println(preferencesLayoutStage);
+			preferencesLayoutStage.close();
+		}
+*/			
 	}
 
 	
 	@FXML
 	private void handleTextFieldChange()
 	{
-		checkBoxDefault.setSelected(false);
+		checkBoxDefault.setSelected( false );
 		
 	}
 	
 	@FXML
 	private void handleApply(  )
 	{
-		ReadDevices.setXLSAttributes(
-				textFieldSheet.getText(), 
-				textFieldColLocation.getText(), 
-				textFieldColIP.getText()
-				);
 		
-		/*
-		ArrayList<String> details = new ArrayList<String>();
-		details = (ArrayList<String>) XLSFiles.getXLSDetails();
-		
-		System.out.println( details.get(0) );
-		System.out.println( details.get(1) );
-		System.out.println( details.get(2) );
-		*/
+		try{
+			DevicesFile devFile = mainApp.getDevicesFile();
+			
+			//mainApp.getDevicesFile().setAttributes(
+			devFile.setAttributes(
+					textFieldSheet.getText(),
+					textFieldColIP.getText(),
+					textFieldColLocation.getText()				
+					);
+			
+			
+			ArrayList<String> attribs = new ArrayList<String>();
+			attribs = (ArrayList<String>) mainApp.getDevicesFile().getAttributes();
+			
+			System.out.println( attribs.get(0) );
+			System.out.println( attribs.get(1) );
+			System.out.println( attribs.get(2) );
+		}
+		catch (Exception e)
+		{
+			System.err.println("Primero abra un archivo.");
+		}
 		
 		preferencesLayoutStage.close();
 		
