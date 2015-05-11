@@ -12,6 +12,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Load File" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleExport" text="Export" />
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Close" />
             </items>
           </Menu>

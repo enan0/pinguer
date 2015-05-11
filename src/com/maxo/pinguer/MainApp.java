@@ -30,11 +30,6 @@ public class MainApp extends Application
 	
 	public MainApp()
 	{		
-		/*
-		devices.addAll( 
-				new ObservableDevice("Calle Prueba", "192.168.200.40")
-				);
-		 */
 	}
 	
 	
@@ -48,6 +43,7 @@ public class MainApp extends Application
 	{
 		this.devicesFile = file;
 	}
+	
 	
 	public DevicesFile getDevicesFile( ) 
 	{

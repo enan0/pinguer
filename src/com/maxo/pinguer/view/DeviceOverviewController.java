@@ -1,7 +1,6 @@
 package com.maxo.pinguer.view;
 
 import java.io.IOException;
-import java.util.Observable;
 
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.ObservableDevice;
@@ -28,6 +27,8 @@ import javafx.scene.paint.Color;
 
 public class DeviceOverviewController 
 {
+	private MainApp mainApp;
+	
 	@FXML
 	private TableView<ObservableDevice> deviceTable;
 	
@@ -60,8 +61,6 @@ public class DeviceOverviewController
 	
 	@FXML
 	private ProgressIndicator loadingInd;
-	
-	private MainApp mainApp;
 	
 	private static boolean isRefreshing;
 	

@@ -19,7 +19,7 @@ public class DevicesFile
 	public static final int LOCATION = 2;
 	
 	private String nameFileSheet; // = "CCTV";
-	private String nameColLocation; // = "Ubicación";
+	private String nameColLocation; // = "Ubicacion";
 	private String nameColIP; // = "IP";
 	
 	private String inputFile;
@@ -37,9 +37,9 @@ public class DevicesFile
 
 	public void setAttributes( String fileSheet, String columnIP, String columnLocation ) 
 	{
-		this.nameFileSheet = fileSheet;
-		this.nameColIP = columnIP;
-		this.nameColLocation = columnLocation;
+		nameFileSheet = fileSheet;
+		nameColIP = columnIP;
+		nameColLocation = columnLocation;
 	}
 	
 	

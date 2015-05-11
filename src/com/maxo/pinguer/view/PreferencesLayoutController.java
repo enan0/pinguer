@@ -1,18 +1,21 @@
 package com.maxo.pinguer.view;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.DevicesFile;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class PreferencesLayoutController 
+public class PreferencesLayoutController implements Initializable
 {
 
 	private RootLayoutController mainWindow;
@@ -56,27 +59,30 @@ public class PreferencesLayoutController
 
 	}
 
-	
-	@FXML
-	private void initialize( )
+
+
+	public void initialize( URL location, ResourceBundle resources )
 	{
+		/*  TODO: VER COMO GADORCHA PASARLE ATRIBUTOS A ESTO TALES COMO mainApp y preferencesLayoutStage  */
 
-		// List<String> attribs = new ArrayList<String>();
-		System.out.println("I'm in");
 
-/*		
+		textFieldSheet.setText( "CCTV" );
+		textFieldColLocation.setText( "Ubicación" );
+		textFieldColIP.setText( "IP" );
+
+/*
 		try
 		{
-			//DevicesFile devFile = mainApp.getDevicesFile();
-			attribs = (ArrayList<String>) mainApp.getDevicesFile().getAttributes();
+			System.out.println( mainApp.getDevicesFile().getAttributes() );
+			List<String> attribs = new ArrayList<String>();
+			
+			DevicesFile devFile = mainApp.getDevicesFile();
+			attribs = (ArrayList<String>) devFile.getAttributes();
 			
 			textFieldSheet.setText( attribs.get( DevicesFile.SHEET ) );
 			textFieldColLocation.setText( attribs.get( DevicesFile.LOCATION ) );
 			textFieldColIP.setText( attribs.get( DevicesFile.IP ) );
-			
-			System.out.println( attribs.get( DevicesFile.SHEET ) );
-			System.out.println( attribs.get( DevicesFile.IP ) );
-			System.out.println( attribs.get( DevicesFile.LOCATION ) );
+
 		}
 		catch(Exception e)
 		{
@@ -84,7 +90,7 @@ public class PreferencesLayoutController
 			System.out.println(preferencesLayoutStage);
 			preferencesLayoutStage.close();
 		}
-*/			
+*/	
 	}
 
 	
@@ -99,23 +105,23 @@ public class PreferencesLayoutController
 	private void handleApply(  )
 	{
 		
+		//System.out.println( mainApp.getDevicesFile().getAttributes() );
 		try{
 			DevicesFile devFile = mainApp.getDevicesFile();
 			
-			//mainApp.getDevicesFile().setAttributes(
-			devFile.setAttributes(
+			mainApp.getDevicesFile().setAttributes(
+			//devFile.setAttributes(
 					textFieldSheet.getText(),
 					textFieldColIP.getText(),
 					textFieldColLocation.getText()				
 					);
 			
+			mainApp.getDevices().clear();
+			mainApp.getDevices().addAll( mainApp.getDevicesFile().loadDevices() );
 			
-			ArrayList<String> attribs = new ArrayList<String>();
-			attribs = (ArrayList<String>) mainApp.getDevicesFile().getAttributes();
+			/* TODO: REVISAR PORQUE ACÁ LOS DATOS SON CORRECTOS PERO AL SALIR SE REESTABLECEN LOS VALORES X DEFECTO  */
+			System.out.println( mainApp.getDevicesFile().getAttributes() );
 			
-			System.out.println( attribs.get(0) );
-			System.out.println( attribs.get(1) );
-			System.out.println( attribs.get(2) );
 		}
 		catch (Exception e)
 		{
@@ -126,7 +132,7 @@ public class PreferencesLayoutController
 		
 	}
 	
-	public void setMainApp(MainApp mainApp)
+	public void setMainApp( MainApp mainApp )
 	{
 		this.mainApp = mainApp;
 	}

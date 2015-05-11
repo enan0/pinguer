@@ -46,11 +46,11 @@ public class RootLayoutController
     	{
     		try
     		{
-    			/*  TODO REVISAR ESTA PARTEEEEEEEEEEEEEEEEEEEEEEEEEEEE  */
     			mainApp.getDevices().clear();
     			mainApp.getDevices().addAll( devicesFiles.loadDevices( ) );
     			mainApp.setFilePath( file );
     			mainApp.setDevicesFile( devicesFiles );
+    			System.out.println( mainApp.getDevicesFile().getAttributes() );
 
     		}
     		catch (Exception e)
@@ -60,6 +60,24 @@ public class RootLayoutController
     	}
     	
     }
+    
+    
+
+	
+	@FXML
+	private void handleExport(  )
+	{
+		/* TODO:
+		 * 		Exportar los dispositivos en formato texto ó CSV.
+		 * 		Tipo de dispositivo, Ubicación, IP, estado.
+		 * 
+		 * 		*Todos
+		 * 		*Mal funcionamiento
+		 * 		
+		 *  */
+				
+	}
+	
     
     @FXML
     private void handleAbout() throws IOException
@@ -89,23 +107,20 @@ public class RootLayoutController
     @FXML
     private void handlePreferences() throws IOException
     {
-    	 //System.out.println("Acabo de entrar a handlePreferences");    	 
+    	     	 
     	 FXMLLoader loader = new FXMLLoader(getClass().getResource( "PreferencesLayout.fxml" ) );
-    	 //System.out.println("Recién cree el FXMLoader y lo cargué");
-         AnchorPane preferencesWindow = (AnchorPane)loader.load();
-         //System.out.println("Recién cree el AnchorPane y lo cargué");
+    	 AnchorPane preferencesWindow = (AnchorPane)loader.load();
          
-         //System.out.println("Previo load Controller");
          PreferencesLayoutController controller = loader.getController();
          controller.setMainWindow( this );
+		 controller.setMainApp( mainApp );
+
          
          Stage stage = new Stage();
          stage.initModality( Modality.APPLICATION_MODAL );
          
-         //System.out.println("Previo setStage");
          controller.setStage( stage );
-         //System.out.println("Posterior setStage");
-         
+                  
          Scene scene = new Scene( preferencesWindow );
          stage.setScene( scene );
          stage.setResizable( false );
