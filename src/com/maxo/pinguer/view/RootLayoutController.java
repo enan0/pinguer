@@ -1,7 +1,9 @@
 package com.maxo.pinguer.view;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +12,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.DevicesFile;
@@ -50,6 +51,7 @@ public class RootLayoutController
     			mainApp.getDevices().addAll( devicesFiles.loadDevices( ) );
     			mainApp.setFilePath( file );
     			mainApp.setDevicesFile( devicesFiles );
+    			// buscarlo en DeviceOverviewController showDevicesLength();
     			System.out.println( mainApp.getDevicesFile().getAttributes() );
 
     		}
@@ -65,16 +67,9 @@ public class RootLayoutController
 
 	
 	@FXML
-	private void handleExport(  )
+	private void handleExport(  ) throws UnsupportedEncodingException, FileNotFoundException
 	{
-		/* TODO:
-		 * 		Exportar los dispositivos en formato texto ó CSV.
-		 * 		Tipo de dispositivo, Ubicación, IP, estado.
-		 * 
-		 * 		*Todos
-		 * 		*Mal funcionamiento
-		 * 		
-		 *  */
+		mainApp.getDevicesFile().exportToFile( mainApp.getDevices() );
 				
 	}
 	
@@ -91,7 +86,6 @@ public class RootLayoutController
         
         Stage stage = new Stage();
         stage.initModality( Modality.WINDOW_MODAL );  
-        //stage.initStyle( StageStyle.UTILITY );
         
         controller.setStage(stage);
         
@@ -111,7 +105,8 @@ public class RootLayoutController
     	 FXMLLoader loader = new FXMLLoader(getClass().getResource( "PreferencesLayout.fxml" ) );
     	 AnchorPane preferencesWindow = (AnchorPane)loader.load();
          
-         PreferencesLayoutController controller = loader.getController();
+         PreferencesLayoutController controller = loader.<PreferencesLayoutController>getController();
+         controller.initPreferencesWindow( mainApp.getDevicesFile() );
          controller.setMainWindow( this );
 		 controller.setMainApp( mainApp );
 

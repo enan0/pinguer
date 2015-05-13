@@ -18,9 +18,9 @@ public class ObservableDevice
 
 	public ObservableDevice( String location, String ip )
 	{
-		this.location = new SimpleStringProperty(location);
-		this.ip = new SimpleStringProperty(ip);
-		this.alive = new SimpleBooleanProperty(false);
+		this.location = new SimpleStringProperty( location );
+		this.ip = new SimpleStringProperty( ip );
+		this.alive = new SimpleBooleanProperty( false );
 	}
 		
 	public StringProperty getLocation()
@@ -42,6 +42,21 @@ public class ObservableDevice
 	public BooleanProperty getAlive() 
 	{
 		return this.alive;
+	}
+	
+	public String showDeviceID( ) 
+	{
+		String print = new String( location.getValue() + " - ( " + ip.getValue() + " )" );
+		
+		return print; 
+		
+	}
+	
+	public String showDeviceStatus( ) 
+	{
+		String print = new String( alive.getValue().toString() );
+		
+		return print;		
 	}
 	
 }

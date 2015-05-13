@@ -38,59 +38,63 @@ public class PreferencesLayoutController implements Initializable
 	
 	@FXML
 	private Button btnApply;
-	
-    public void setMainWindow(RootLayoutController mainWindow)
-    {
-        this.mainWindow = mainWindow;
-    }
 
+	
 	@FXML
 	private void defaultPreferences()
 	{
-
 		if ( checkBoxDefault.isSelected() )
 		{
 			textFieldSheet.setText("CCTV");
-			
 			textFieldColLocation.setText("Ubicación");
-			
 			textFieldColIP.setText("IP");
 		}
-
 	}
 
-
+	private boolean isDefaultPreferences( )
+	{
+		if ( textFieldSheet.getText() != "CCTV" )
+			return false;
+		else if ( textFieldColLocation.getText() != "Ubicación" )
+				return false;
+			else if ( textFieldColIP.getText() != "IP" )
+				return false;
+			else
+				return true;
+		
+	}
 
 	public void initialize( URL location, ResourceBundle resources )
+	{	
+	}
+	
+	public void initPreferencesWindow( DevicesFile devicesAttribs ) 
 	{
-		/*  TODO: VER COMO GADORCHA PASARLE ATRIBUTOS A ESTO TALES COMO mainApp y preferencesLayoutStage  */
-
-
-		textFieldSheet.setText( "CCTV" );
-		textFieldColLocation.setText( "Ubicación" );
-		textFieldColIP.setText( "IP" );
-
-/*
 		try
 		{
-			System.out.println( mainApp.getDevicesFile().getAttributes() );
+			System.out.println( devicesAttribs.getAttributes( ) );
+			
 			List<String> attribs = new ArrayList<String>();
 			
-			DevicesFile devFile = mainApp.getDevicesFile();
-			attribs = (ArrayList<String>) devFile.getAttributes();
+			attribs = (ArrayList<String>) devicesAttribs.getAttributes( );
 			
 			textFieldSheet.setText( attribs.get( DevicesFile.SHEET ) );
 			textFieldColLocation.setText( attribs.get( DevicesFile.LOCATION ) );
 			textFieldColIP.setText( attribs.get( DevicesFile.IP ) );
+			
+			if ( isDefaultPreferences() )
+				checkBoxDefault.setSelected(true);
+			else
+				checkBoxDefault.setSelected(false);
 
 		}
 		catch(Exception e)
 		{
-			System.err.println("Primero abra un archivo.");
-			System.out.println(preferencesLayoutStage);
+			System.err.println( "Primero abra un archivo." );
+			System.out.println( preferencesLayoutStage );
 			preferencesLayoutStage.close();
 		}
-*/	
+	
 	}
 
 	
@@ -105,12 +109,8 @@ public class PreferencesLayoutController implements Initializable
 	private void handleApply(  )
 	{
 		
-		//System.out.println( mainApp.getDevicesFile().getAttributes() );
 		try{
-			DevicesFile devFile = mainApp.getDevicesFile();
-			
 			mainApp.getDevicesFile().setAttributes(
-			//devFile.setAttributes(
 					textFieldSheet.getText(),
 					textFieldColIP.getText(),
 					textFieldColLocation.getText()				
@@ -132,6 +132,7 @@ public class PreferencesLayoutController implements Initializable
 		
 	}
 	
+	
 	public void setMainApp( MainApp mainApp )
 	{
 		this.mainApp = mainApp;
@@ -141,6 +142,11 @@ public class PreferencesLayoutController implements Initializable
 	{
 		this.preferencesLayoutStage = stage;		
 	}
+	
+    public void setMainWindow(RootLayoutController mainWindow)
+    {
+        this.mainWindow = mainWindow;
+    }
 
 	
 }

@@ -63,7 +63,7 @@ public class IPv4
 		InetAddress host = InetAddress.getByName( ip );
 		try 
 		{
-			return host.isReachable(15000);
+			return host.isReachable(10000);
 		}
 		catch (IOException e)
 		{

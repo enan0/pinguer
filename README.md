@@ -8,6 +8,7 @@ Programa para hacer pings a dispositivos y saber si responden. Dichos dispositiv
 
 
 Mejoras pendientes:
+- [x] Exportar dispositivos "Apagados" a archivo
 - [ ] Botón de Cancel.
 - [ ] Contador de dispositivos (total y Ok/Not Ok).
 - [ ] Auto refresh.

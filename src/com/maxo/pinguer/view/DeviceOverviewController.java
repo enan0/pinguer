@@ -64,7 +64,8 @@ public class DeviceOverviewController
 	
 	private static boolean isRefreshing;
 	
-
+	private Task<ObservableList<ObservableDevice>> task;
+	
 	public DeviceOverviewController()
 	{
 		
@@ -95,6 +96,8 @@ public class DeviceOverviewController
 	}
 
 	
+
+	
 	private void refresh() throws IOException, InterruptedException
 	{
 		for ( ObservableDevice dev : mainApp.getDevices() )
@@ -107,68 +110,88 @@ public class DeviceOverviewController
 
 	}
 	
+	
+	private Task<ObservableList<ObservableDevice>> createTask()
+	{
+		final Task<ObservableList<ObservableDevice>> task = new Task<ObservableList<ObservableDevice>>() 
+				{
+					 @Override 
+					 protected ObservableList<ObservableDevice> call() throws InterruptedException, IOException
+					 {
+						 refresh(); 
+						 return null;
+					 }
+				};
+
+				task.stateProperty().addListener( new ChangeListener<Worker.State>() 
+				{
+					 @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) 
+					 {
+						 
+						if ( newState == Worker.State.RUNNING )
+						{
+							loadingInd.progressProperty().bind( task.progressProperty() );
+							loadingInd.setVisible(true);
+							btnRefresh.setText("Cancel");
+						}
+						 
+						if ( newState == Worker.State.READY )
+						{
+							loadingInd.setVisible(false);
+							isRefreshing = false;
+							btnRefresh.setText("Refresh");				 
+						}
+					
+						if ( newState == Worker.State.CANCELLED )
+						{
+							 System.out.println(" Me cancelaron =( ");
+							 loadingInd.setVisible(false);
+							 isRefreshing = false;
+							 btnRefresh.setText("Refresh");
+						}
+					 }
+				});
+		
+		return task;
+		
+	}
+	
 	@FXML
 	private void handleRefresh()
 	{
+		/* TODO: partir método en dos. Leer si estoy REFRESCANDO -> Cancelar // Sino -> Refrescar. 
+		 * 
+		 * 		PD: LO QE ESTA HECHO PARA EL CANCEL. NO FUNCAAAA
+		 */
+		
+		task = createTask();
+
+		/*
+		if ( task.isRunning() )
+			task.cancel( true );
+		else
+			new Thread(task).start();
+		 */
+		
 		if ( ! isRefreshing )
 		{
 			isRefreshing = true;
 		}
 		else
 		{
-			return;
+			task.cancel();
+			//return;
 		}
 		
-		loadingInd.setVisible(true);
-		//btnRefresh.setText("Cancel");
-		
-		 final Task<ObservableList<ObservableDevice>> task = new Task<ObservableList<ObservableDevice>>() 
-		 {
-			 @Override 
-			 protected ObservableList<ObservableDevice> call() throws InterruptedException, IOException
-			 {
-				 refresh();
-				 return null;
-			 }
-			 
-			 @Override
-			 protected void cancelled()
-			 {
-				 super.cancelled();
-			 }
-			 
-			 @Override
-			 protected void succeeded()
-			 {
-				 super.succeeded();
-			 }
-		 };
-		 
-		 loadingInd.progressProperty().bind( task.progressProperty() );
-		 
-		 task.stateProperty().addListener( new ChangeListener<Worker.State>() {
-			 @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) 
-			 {
-				 if ( newState == Worker.State.SUCCEEDED ) 
-				 {
-					 loadingInd.setVisible(false);
-					 isRefreshing = false;
-					 //btnRefresh.setText("Refresh");
-					 
-				 }
-			 }
-		});
-		 
-
-		new Thread(task).start();
+		new Thread(task).start();	
  
 	}
 
 	
-	private void showDevicesLength() 
+	public void showDevicesLength() 
 	{
 		
-		labelCantDevices.setText("Cant. ");
+		labelCantDevices.setText("Cant. " + mainApp.getDevices().size() );
 		System.out.println( mainApp.getDevices().size() );
 		//Integer cantDevices = mainApp.getDevices().size();
 		//ObservableDevice dev = mainApp.getDevices().get(0);
@@ -176,6 +199,7 @@ public class DeviceOverviewController
 		//labelCantDevices.setText( String.valueOf(cantDevices) );
 		//System.out.println( cantDevices );
 	}
+	
 	
 	@FXML
 	public void initialize( ) throws IOException, InterruptedException

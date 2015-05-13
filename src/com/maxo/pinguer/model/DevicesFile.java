@@ -1,7 +1,10 @@
 package com.maxo.pinguer.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,41 @@ public class DevicesFile
 		
 		return details; 
 		
+	}
+	
+	
+	
+	private List<ObservableDevice> offlineDevices( List<ObservableDevice> devices )
+	{
+		List<ObservableDevice> notAliveDevices = new ArrayList<ObservableDevice>();
+				
+		for ( ObservableDevice device : devices )
+		{
+			if ( device.getAlive().getValue() == false )
+			{
+				notAliveDevices.add(device);
+			}
+		}
+		
+		return notAliveDevices;		
+	}
+	
+	
+	public void exportToFile( List<ObservableDevice> devices ) throws UnsupportedEncodingException, FileNotFoundException 
+	{
+		List<ObservableDevice> notAliveDevices = new ArrayList<ObservableDevice>( offlineDevices(devices) );
+		
+		PrintWriter outFile = new PrintWriter( "offlineDevices.txt", "UTF-8" );
+		outFile.println(" Archivo con dispositivos Sin Funcionar: ");
+		outFile.println();
+		
+		for ( ObservableDevice device : notAliveDevices )
+		{
+			outFile.println( device.showDeviceID() );
+			System.out.println( device.showDeviceID() );
+		}
+		
+		outFile.close();
 	}
 	
 	
