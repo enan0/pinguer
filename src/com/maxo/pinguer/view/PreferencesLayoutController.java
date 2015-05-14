@@ -25,6 +25,12 @@ public class PreferencesLayoutController implements Initializable
 	private Stage preferencesLayoutStage;
 	
 	@FXML
+	private	TextField textFieldOutputFile;
+	
+	@FXML
+	private CheckBox checkBoxAliveDevices;
+	
+	@FXML
 	private TextField textFieldSheet;
 	
 	@FXML
@@ -90,6 +96,7 @@ public class PreferencesLayoutController implements Initializable
 		}
 		catch(Exception e)
 		{
+			/* TODO: VER XQ ROMPE (el Layout) AL NO HABER ABIERTO UN ARCHIVO ANTES */
 			System.err.println( "Primero abra un archivo." );
 			System.out.println( preferencesLayoutStage );
 			preferencesLayoutStage.close();

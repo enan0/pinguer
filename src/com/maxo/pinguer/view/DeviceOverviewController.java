@@ -68,7 +68,7 @@ public class DeviceOverviewController
 	
 	public DeviceOverviewController()
 	{
-		
+		task = createTask();
 	}
 	
 	private void showDeviceDetails( ObservableDevice device )
@@ -95,13 +95,11 @@ public class DeviceOverviewController
 		
 	}
 
-	
-
-	
 	private void refresh() throws IOException, InterruptedException
 	{
 		for ( ObservableDevice dev : mainApp.getDevices() )
 		{	
+			
 			dev.isAlive();
 			
 			/* TODO: AUTOSCROLL AL ACTUALIZAR, en realidad resaltar por cual va */
@@ -118,7 +116,19 @@ public class DeviceOverviewController
 					 @Override 
 					 protected ObservableList<ObservableDevice> call() throws InterruptedException, IOException
 					 {
-						 refresh(); 
+						 for ( ObservableDevice dev : mainApp.getDevices() )
+							{	
+							 	if ( isCancelled() )
+							 	{
+							 		updateMessage("Cancelado.");
+							 		break;
+							 	}
+							 	
+								dev.isAlive();
+								
+								/* TODO: AUTOSCROLL AL ACTUALIZAR, en realidad resaltar por cual va */
+								//deviceTable.scrollTo(dev);
+							}
 						 return null;
 					 }
 				};
@@ -144,7 +154,6 @@ public class DeviceOverviewController
 					
 						if ( newState == Worker.State.CANCELLED )
 						{
-							 System.out.println(" Me cancelaron =( ");
 							 loadingInd.setVisible(false);
 							 isRefreshing = false;
 							 btnRefresh.setText("Refresh");
@@ -159,40 +168,43 @@ public class DeviceOverviewController
 	@FXML
 	private void handleRefresh()
 	{
-		/* TODO: partir método en dos. Leer si estoy REFRESCANDO -> Cancelar // Sino -> Refrescar. 
-		 * 
-		 * 		PD: LO QE ESTA HECHO PARA EL CANCEL. NO FUNCAAAA
-		 */
+		/* TODO: CANCELA PERO NO SE PUEDE VOLVER A CORRER EL TASK */
 		
-		task = createTask();
+		if ( mainApp.getDevices().isEmpty() )
+			return;
+		else
+		{
+			if ( task.isRunning() )
+			{
+				System.out.println( "por cancelar" );
+				task.cancel( true );
+				System.out.println( task.getState() );
+			}
+			else
+			{	
+				System.out.println( "hola" );
+				//new Thread(task).start();
+				Thread th = new Thread( task );
+				th.start();
+			}	
+		}
 
-		/*
-		if ( task.isRunning() )
-			task.cancel( true );
-		else
-			new Thread(task).start();
-		 */
-		
-		if ( ! isRefreshing )
-		{
-			isRefreshing = true;
-		}
-		else
-		{
-			task.cancel();
-			//return;
-		}
-		
-		new Thread(task).start();	
- 
 	}
 
 	
 	public void showDevicesLength() 
 	{
+
+		if ( ! mainApp.getDevices().isEmpty() )
+		{
+			labelCantDevices.setText("Cant. " + mainApp.getDevices().size() );
+		}
 		
-		labelCantDevices.setText("Cant. " + mainApp.getDevices().size() );
 		System.out.println( mainApp.getDevices().size() );
+
+		System.out.println( columnLocation.getTableView().getItems().size() );
+
+		
 		//Integer cantDevices = mainApp.getDevices().size();
 		//ObservableDevice dev = mainApp.getDevices().get(0);
 		//labelCantDevices.setText( String.valueOf(cantDevices) );
@@ -208,8 +220,6 @@ public class DeviceOverviewController
 		columnLocation.setCellValueFactory(cellData -> cellData.getValue().getLocation());
 		columnIP.setCellValueFactory(cellData -> cellData.getValue().getIP());
 		columnStatus.setCellValueFactory(cellData -> cellData.getValue().getAlive() );
-		
-		
 		
 		columnStatus.setCellFactory( column -> 
 			{ return new TableCell<ObservableDevice, Boolean>()
@@ -242,15 +252,29 @@ public class DeviceOverviewController
 				
 					};
 		});
-		
-		//showDevicesLength();
-		
+			
 		loadingInd.setVisible(false);
 		
 		deviceTable.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue)
 				-> showDeviceDetails(newValue) );
-				
+		
 	}
+	
+    public void changelistener(final TableColumn<ObservableDevice, String> listerColumn) 
+    {
+    	System.out.println( listerColumn.getColumns().size() );
+    	/*
+        listerColumn.widthProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                System.out.print(listerColumn.getText() + "  ");
+                System.out.println(t1);
+            }
+        });
+        */
+    }
+	
 	
 	public void setMainApp( MainApp mainApp )
 	{

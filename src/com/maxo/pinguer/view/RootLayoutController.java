@@ -51,7 +51,7 @@ public class RootLayoutController
     			mainApp.getDevices().addAll( devicesFiles.loadDevices( ) );
     			mainApp.setFilePath( file );
     			mainApp.setDevicesFile( devicesFiles );
-    			// buscarlo en DeviceOverviewController showDevicesLength();
+    			// buscar en DeviceOverviewController showDevicesLength();
     			System.out.println( mainApp.getDevicesFile().getAttributes() );
 
     		}
@@ -101,7 +101,6 @@ public class RootLayoutController
     @FXML
     private void handlePreferences() throws IOException
     {
-    	     	 
     	 FXMLLoader loader = new FXMLLoader(getClass().getResource( "PreferencesLayout.fxml" ) );
     	 AnchorPane preferencesWindow = (AnchorPane)loader.load();
          
@@ -120,9 +119,7 @@ public class RootLayoutController
          stage.setScene( scene );
          stage.setResizable( false );
          stage.setTitle( "Preferences" );
-         stage.show(); 
-    	
-    	
+         stage.show();	
     }
     
     @FXML
