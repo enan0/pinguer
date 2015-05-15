@@ -66,9 +66,11 @@ public class DeviceOverviewController
 	
 	private Task<ObservableList<ObservableDevice>> task;
 	
+
 	public DeviceOverviewController()
 	{
 		task = createTask();
+
 	}
 	
 	private void showDeviceDetails( ObservableDevice device )
@@ -125,6 +127,7 @@ public class DeviceOverviewController
 							 	}
 							 	
 								dev.isAlive();
+								System.out.println( dev.getIP() );
 								
 								/* TODO: AUTOSCROLL AL ACTUALIZAR, en realidad resaltar por cual va */
 								//deviceTable.scrollTo(dev);
@@ -178,21 +181,21 @@ public class DeviceOverviewController
 			{
 				System.out.println( "por cancelar" );
 				task.cancel( true );
-				System.out.println( task.getState() );
 			}
 			else
 			{	
-				System.out.println( "hola" );
 				//new Thread(task).start();
 				Thread th = new Thread( task );
 				th.start();
+				
+				
 			}	
 		}
 
 	}
 
 	
-	public void showDevicesLength() 
+	public void showDevicesLength(  ) 
 	{
 
 		if ( ! mainApp.getDevices().isEmpty() )
@@ -253,12 +256,15 @@ public class DeviceOverviewController
 					};
 		});
 			
+		
 		loadingInd.setVisible(false);
 		
 		deviceTable.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue)
 				-> showDeviceDetails(newValue) );
+
 		
 	}
+	
 	
     public void changelistener(final TableColumn<ObservableDevice, String> listerColumn) 
     {
