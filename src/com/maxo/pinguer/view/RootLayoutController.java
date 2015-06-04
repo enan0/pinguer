@@ -50,9 +50,10 @@ public class RootLayoutController
     			mainApp.getDevices().clear();
     			mainApp.getDevices().addAll( devicesFiles.loadDevices( ) );
     			mainApp.setFilePath( file );
-    			mainApp.setDevicesFile( devicesFiles );
-    			// buscar en DeviceOverviewController showDevicesLength();
-    			System.out.println( mainApp.getDevicesFile().getAttributes() );
+    			mainApp.setDevicesFile( devicesFiles ); 
+    			
+    			//System.out.println( mainApp.getDevicesFile().getAttributes() );
+    			//System.out.println( mainApp.getFilePath() );
 
     		}
     		catch (Exception e)
@@ -106,7 +107,7 @@ public class RootLayoutController
          
          PreferencesLayoutController controller = loader.<PreferencesLayoutController>getController();
          controller.initPreferencesWindow( mainApp.getDevicesFile() );
-         controller.setMainWindow( this );
+         //controller.setMainWindow( this );
 		 controller.setMainApp( mainApp );
 
          

@@ -1,12 +1,20 @@
 package com.maxo.pinguer.view;
 
 import java.io.IOException;
+import java.util.Observable;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.ObservableDevice;
 
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -66,6 +74,7 @@ public class DeviceOverviewController
 	
 	private Task<ObservableList<ObservableDevice>> task;
 	
+	private StringProperty itemCount;
 
 	public DeviceOverviewController()
 	{
@@ -97,19 +106,6 @@ public class DeviceOverviewController
 		
 	}
 
-	private void refresh() throws IOException, InterruptedException
-	{
-		for ( ObservableDevice dev : mainApp.getDevices() )
-		{	
-			
-			dev.isAlive();
-			
-			/* TODO: AUTOSCROLL AL ACTUALIZAR, en realidad resaltar por cual va */
-			//deviceTable.scrollTo(dev);
-		}
-
-	}
-	
 	
 	private Task<ObservableList<ObservableDevice>> createTask()
 	{
@@ -127,6 +123,9 @@ public class DeviceOverviewController
 							 	}
 							 	
 								dev.isAlive();
+								deviceTable.getSelectionModel().select(dev);
+								//deviceTable.requestFocus();
+								//deviceTable.getFocusModel().focus(5);
 								System.out.println( dev.getIP() );
 								
 								/* TODO: AUTOSCROLL AL ACTUALIZAR, en realidad resaltar por cual va */
@@ -138,7 +137,8 @@ public class DeviceOverviewController
 
 				task.stateProperty().addListener( new ChangeListener<Worker.State>() 
 				{
-					 @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) 
+					 @Override 
+					 public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) 
 					 {
 						 
 						if ( newState == Worker.State.RUNNING )
@@ -186,40 +186,36 @@ public class DeviceOverviewController
 			{	
 				//new Thread(task).start();
 				Thread th = new Thread( task );
-				th.start();
-				
-				
+				th.start();			
 			}	
 		}
-
 	}
 
 	
-	public void showDevicesLength(  ) 
+	public ObservableValue<String> showDevicesLength(  )
 	{
+		StringProperty cantDevices;
 
-		if ( ! mainApp.getDevices().isEmpty() )
+		//if ( mainApp.getDevices().isEmpty() )
+		if ( deviceTable.getItems().isEmpty() )
 		{
-			labelCantDevices.setText("Cant. " + mainApp.getDevices().size() );
+			cantDevices = new SimpleStringProperty( "Vacio" );
+			System.out.println( deviceTable.getItems() );
+		}
+		else
+		{
+			//String cant = String.valueOf( mainApp.getDevices().size() );
+			String cant = String.valueOf( deviceTable.getItems() );
+			cantDevices = new SimpleStringProperty( cant );
+			System.out.println( deviceTable.getItems() );
 		}
 		
-		System.out.println( mainApp.getDevices().size() );
-
-		System.out.println( columnLocation.getTableView().getItems().size() );
-
-		
-		//Integer cantDevices = mainApp.getDevices().size();
-		//ObservableDevice dev = mainApp.getDevices().get(0);
-		//labelCantDevices.setText( String.valueOf(cantDevices) );
-		//labelCantDevices.setText( String.valueOf(cantDevices) );
-		//System.out.println( cantDevices );
+		return cantDevices;
 	}
-	
 	
 	@FXML
 	public void initialize( ) throws IOException, InterruptedException
 	{
-		
 		columnLocation.setCellValueFactory(cellData -> cellData.getValue().getLocation());
 		columnIP.setCellValueFactory(cellData -> cellData.getValue().getIP());
 		columnStatus.setCellValueFactory(cellData -> cellData.getValue().getAlive() );
@@ -258,29 +254,29 @@ public class DeviceOverviewController
 			
 		
 		loadingInd.setVisible(false);
+
+/*		
+		deviceTable.getItems().addListener( new ListChangeListener<ObservableDevice>()
+			{	
+				@Override
+				public void onChanged( ListChangeListener.Change<? extends ObservableDevice> c )
+				{
+					System.out.println( c.getList().size() );
+					/*
+					ObservableList<ObservableDevice> list = c.getList();
+					String newSize = String.valueOf( list.size() );
+					itemCount = new SimpleStringProperty( newSize );
+// comentar aca
+				}		
+			}
+		);
+*/	
 		
 		deviceTable.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue)
 				-> showDeviceDetails(newValue) );
-
-		
 	}
 	
-	
-    public void changelistener(final TableColumn<ObservableDevice, String> listerColumn) 
-    {
-    	System.out.println( listerColumn.getColumns().size() );
-    	/*
-        listerColumn.widthProperty().addListener(new ChangeListener<Number>() {
 
-            @Override
-            public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
-                System.out.print(listerColumn.getText() + "  ");
-                System.out.println(t1);
-            }
-        });
-        */
-    }
-	
 	
 	public void setMainApp( MainApp mainApp )
 	{

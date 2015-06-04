@@ -29,7 +29,13 @@ public class MainApp extends Application
 	private DevicesFile devicesFile;
 	
 	public MainApp()
-	{		
+	{/*
+		devices.addAll(
+				new ObservableDevice("Calle 1", "10.1.1.1"),
+				new ObservableDevice("Calle 2", "10.1.1.2"),
+				new ObservableDevice("Calle 3", "10.1.1.3")			
+				);	
+	 */
 	}
 	
 	

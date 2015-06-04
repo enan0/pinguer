@@ -26,11 +26,13 @@ public class DevicesFile
 	private String nameColIP; // = "IP";
 	
 	private String inputFile;
+	private String outputFile;
 
 	
 	public DevicesFile( String inputFile )
 	{
 		this.inputFile = inputFile;
+		this.outputFile = "offlineDevices.txt";
 		
 		this.nameFileSheet = "CCTV";
 		this.nameColLocation = "Ubicación";
@@ -76,11 +78,16 @@ public class DevicesFile
 	}
 	
 	
+	public void modifyExportFileName( String outputFile ) 
+	{
+		this.outputFile = outputFile;
+	}
+	
 	public void exportToFile( List<ObservableDevice> devices ) throws UnsupportedEncodingException, FileNotFoundException 
 	{
 		List<ObservableDevice> notAliveDevices = new ArrayList<ObservableDevice>( offlineDevices(devices) );
 		
-		PrintWriter outFile = new PrintWriter( "offlineDevices.txt", "UTF-8" );
+		PrintWriter outFile = new PrintWriter( outputFile, "UTF-8" );
 		outFile.println(" Archivo con dispositivos Sin Funcionar: ");
 		outFile.println();
 		

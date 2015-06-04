@@ -7,40 +7,41 @@ import java.util.ResourceBundle;
 
 import com.maxo.pinguer.MainApp;
 import com.maxo.pinguer.model.DevicesFile;
+import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 
 public class PreferencesLayoutController implements Initializable
 {
-
-	private RootLayoutController mainWindow;
+	//private RootLayoutController mainWindow;
 	
 	private MainApp mainApp;
 	
 	private Stage preferencesLayoutStage;
 	
 	@FXML
-	private	TextField textFieldOutputFile;
-	
-	@FXML
-	private CheckBox checkBoxAliveDevices;
-	
-	@FXML
 	private TextField textFieldSheet;
 	
 	@FXML
-	private TextField textFieldColLocation;
+	private TextField textFieldColumnLocation;
 	
 	@FXML
-	private TextField textFieldColIP;
+	private TextField textFieldColumnIP;
+	
+	@FXML
+	private	TextField textFieldOutputFile;
 	
 	@FXML
 	private CheckBox checkBoxDefault;
+	
+	@FXML
+	private CheckBox checkBoxAliveDevices;
 	
 	@FXML
 	private Button btnApply;
@@ -52,56 +53,58 @@ public class PreferencesLayoutController implements Initializable
 		if ( checkBoxDefault.isSelected() )
 		{
 			textFieldSheet.setText("CCTV");
-			textFieldColLocation.setText("Ubicación");
-			textFieldColIP.setText("IP");
+			textFieldColumnLocation.setText("Ubicación");
+			textFieldColumnIP.setText("IP");
 		}
 	}
 
-	private boolean isDefaultPreferences( )
+	
+	private boolean areDefaultPreferences( )
 	{
 		if ( textFieldSheet.getText() != "CCTV" )
 			return false;
-		else if ( textFieldColLocation.getText() != "Ubicación" )
+		else if ( textFieldColumnLocation.getText() != "Ubicación" )
 				return false;
-			else if ( textFieldColIP.getText() != "IP" )
+			else if ( textFieldColumnIP.getText() != "IP" )
 				return false;
 			else
 				return true;
-		
+
 	}
 
+	
 	public void initialize( URL location, ResourceBundle resources )
 	{	
 	}
+	
 	
 	public void initPreferencesWindow( DevicesFile devicesAttribs ) 
 	{
 		try
 		{
-			System.out.println( devicesAttribs.getAttributes( ) );
+			//System.out.println( devicesAttribs.getAttributes( ) );
 			
 			List<String> attribs = new ArrayList<String>();
 			
 			attribs = (ArrayList<String>) devicesAttribs.getAttributes( );
 			
 			textFieldSheet.setText( attribs.get( DevicesFile.SHEET ) );
-			textFieldColLocation.setText( attribs.get( DevicesFile.LOCATION ) );
-			textFieldColIP.setText( attribs.get( DevicesFile.IP ) );
+			textFieldColumnLocation.setText( attribs.get( DevicesFile.LOCATION ) );
+			textFieldColumnIP.setText( attribs.get( DevicesFile.IP ) );
 			
-			if ( isDefaultPreferences() )
+			/* TODO: SIEMPRE inicializan las defaults en FALSE */
+			if ( areDefaultPreferences() )
 				checkBoxDefault.setSelected(true);
 			else
 				checkBoxDefault.setSelected(false);
-
 		}
 		catch(Exception e)
 		{
 			/* TODO: VER XQ ROMPE (el Layout) AL NO HABER ABIERTO UN ARCHIVO ANTES */
 			System.err.println( "Primero abra un archivo." );
 			System.out.println( preferencesLayoutStage );
-			preferencesLayoutStage.close();
+			//preferencesLayoutStage.close();
 		}
-	
 	}
 
 	
@@ -112,31 +115,53 @@ public class PreferencesLayoutController implements Initializable
 		
 	}
 	
-	@FXML
-	private void handleApply(  )
+	
+	private void applyLoadFile( )
 	{
-		
 		try{
 			mainApp.getDevicesFile().setAttributes(
 					textFieldSheet.getText(),
-					textFieldColIP.getText(),
-					textFieldColLocation.getText()				
+					textFieldColumnIP.getText(),
+					textFieldColumnLocation.getText()				
 					);
 			
 			mainApp.getDevices().clear();
 			mainApp.getDevices().addAll( mainApp.getDevicesFile().loadDevices() );
-			
-			/* TODO: REVISAR PORQUE ACÁ LOS DATOS SON CORRECTOS PERO AL SALIR SE REESTABLECEN LOS VALORES X DEFECTO  */
-			System.out.println( mainApp.getDevicesFile().getAttributes() );
-			
+	
 		}
 		catch (Exception e)
 		{
 			System.err.println("Primero abra un archivo.");
 		}
-		
+	}
+	
+	
+	private void applyExportFile( )
+	{
+		String outputFile = new String( textFieldOutputFile.getText() );
+		mainApp.getDevicesFile().modifyExportFileName(outputFile);
+	
+	}
+	
+	@FXML
+	private void handleApply(  )
+	{
+		try{
+			mainApp.getDevicesFile().setAttributes(
+					textFieldSheet.getText(),
+					textFieldColumnIP.getText(),
+					textFieldColumnLocation.getText()				
+					);
+						
+			mainApp.getDevices().clear();
+			mainApp.getDevices().addAll( mainApp.getDevicesFile().loadDevices() );
+	
+		}
+		catch (Exception e)
+		{
+			System.err.println("Primero abra un archivo.");
+		}
 		preferencesLayoutStage.close();
-		
 	}
 	
 	
@@ -150,10 +175,11 @@ public class PreferencesLayoutController implements Initializable
 		this.preferencesLayoutStage = stage;		
 	}
 	
+	/*
     public void setMainWindow(RootLayoutController mainWindow)
     {
         this.mainWindow = mainWindow;
     }
-
+	 */
 	
 }
